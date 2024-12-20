@@ -1,11 +1,14 @@
 package basic.collects.lists
 
+import com.typesafe.scalalogging.LazyLogging
+
 import scala.annotation.tailrec
 import org.scalatest.funsuite.AnyFunSuite
 
-class ListSample extends AnyFunSuite {
+class ListSample extends AnyFunSuite, LazyLogging {
 
   test("listSample") {
+    logger.info("test")
     val list = List(1, 2, 3)
     assert(list.length == 3)
   }
