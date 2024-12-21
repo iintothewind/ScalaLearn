@@ -2,8 +2,6 @@ package basic.collects.lists
 
 import org.scalatest.funsuite.AnyFunSuite
 
-import scala.reflect.ClassTag
-
 class FirstOderOperations extends AnyFunSuite {
 
   test("basicOperations") {
