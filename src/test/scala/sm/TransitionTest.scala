@@ -10,7 +10,7 @@ case class Order(id: Int, status: String)
 class TransitionTest extends AnyFunSuite, LazyLogging {
 
   test("init01") {
-    val t = Transition("a", "b", (o: Order) => o.status == "a", (o: Order) => Some(o.copy(status = "b")))
+    val t = Transition("a", "b", (o: Order) => Option(o).exists(_.status == "a"), (o: Order) => Some(o.copy(status = "b")))
     val o = Order(1, "a")
     assert(t.check(o))
     println(t.execute(o))
@@ -18,11 +18,11 @@ class TransitionTest extends AnyFunSuite, LazyLogging {
   }
 
   test("initSm01") {
-    val t: Transition[String, Order, Order] = Transition("a", "b", (o: Order) => o.status == "a", (o: Order) => o.copy(status = "b"))
+    val t: Transition[String, Order, Order] = Transition("a", "b", (o: Order) => Option(o).exists(_.status == "a"), (o: Order) => o.copy(status = "b"))
     val o = Order(1, "a")
     val sm = StateMachine(s = classOf[String], c = classOf[Order], r = classOf[Order])
       .withTransition(t)
-      .withTransition("a", "c", o => o.status == "a", o => o.copy(status = "c"))
+      .withTransition("a", "c", o => Option(o).exists(_.status == "a"), o => o.copy(status = "c"))
 
     val r1 = sm.mkTransition("a", "b", o)
     assertResult(r1.status)("b")
