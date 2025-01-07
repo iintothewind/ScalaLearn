@@ -7,7 +7,7 @@ import java.lang
 
 case class Order(id: Int, status: String)
 
-class TransitionTest extends AnyFunSuite, LazyLogging {
+class StateMachineTest extends AnyFunSuite, LazyLogging {
 
   test("init01") {
     val t = Transition("a", "b", (o: Order) => Option(o).exists(_.status == "a"), (o: Order) => Some(o.copy(status = "b")))
@@ -24,10 +24,10 @@ class TransitionTest extends AnyFunSuite, LazyLogging {
       .withTransition(t)
       .withTransition("a", "c", o => Option(o).exists(_.status == "a"), o => o.copy(status = "c"))
 
-    val r1 = sm.mkTransition("a", "b", o)
+    val r1 = sm.change("a", "b", o)
     assertResult(r1.status)("b")
 
-    val r2 = sm.mkTransition("a", "c", o)
+    val r2 = sm.change("a", "c", o)
     assertResult(r2.status)("c")
   }
 
