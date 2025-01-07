@@ -7,6 +7,7 @@ import java.util
 import scala.collection.immutable.TreeMap
 import scala.collection.{immutable, mutable}
 import scala.io.{BufferedSource, Source}
+import scala.util.Try
 
 class MapTests extends AnyFunSuite {
 
@@ -58,7 +59,7 @@ class MapTests extends AnyFunSuite {
     assert(Map("Run" -> 3, "Spot" -> 2, "See" -> 1) == countWords("See Spot Run. Run, Spot. Run!"))
   }
 
-  test("wordCounting") {
+  test("countWords01") {
     //    val buffer: BufferedSource = Source.fromFile("README.md")
     //    buffer.getLines()
     //      .flatMap(_.split("[ ,.!;]+"))
@@ -72,6 +73,18 @@ class MapTests extends AnyFunSuite {
       .flatMap(line => Generator(line.split("[ ,.!;]").toSeq: _*))
       .foldLeft(Map.empty[String, Int])((map, word) => map.+(word -> (map.getOrElse(word, 0) + 1)))
       .toList.sortBy(_._2)(Ordering[Int].reverse).foreach(println)
+  }
+
+  test("countWords02") {
+    val buffer: BufferedSource = Source.fromFile("README.md")
+    val lst = Try(buffer.getLines())
+      .map(_.flatMap(_.split("[ ,.!;]+")))
+      .map(_.filter(!_.isBlank))
+      .map(_.foldLeft(Map.empty[String, Int])((map, word) => map.+(word -> (map.getOrElse(word, 0) + 1))))
+      .map(_.toList.sortBy(_._2)(Ordering[Int].reverse))
+      .getOrElse(List.empty)
+    lst.foreach(println)
+    buffer.close()
   }
 
   test("sortedMap") {
