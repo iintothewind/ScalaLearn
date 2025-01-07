@@ -3,7 +3,7 @@ package sm
 import java.util.Objects
 
 
-case class Transition[S, C, R](fromState: S, toState: S, predicate: C => Boolean, converter: C => R) {
+case class Transition[S, C, R](fromState: S, toState: S, predicate: C => Boolean, executor: C => R) {
 
   private def getFromState: S = fromState
 
@@ -23,7 +23,7 @@ case class Transition[S, C, R](fromState: S, toState: S, predicate: C => Boolean
     case _ => false
   }
 
-  def execute[C1 >: C, R1 <: R](context: C): R = Option(converter) match {
+  def execute[C1 >: C, R1 <: R](context: C): R = Option(executor) match {
     case Some(f) => if (check(context)) f(context) else null.asInstanceOf[R]
     case _ => null.asInstanceOf[R]
   }
