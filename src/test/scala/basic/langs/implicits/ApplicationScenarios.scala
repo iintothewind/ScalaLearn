@@ -38,9 +38,21 @@ class ApplicationScenarios extends AnyFunSuite {
     greeting + ", " + name
   }
 
+
   test("implicitParameters") {
     assert("Hi, there" == greet("Hi"))
     assert("Hi, Sarah" == greet("Hi")("Sarah"))
+  }
+
+  given name: String = "test"
+
+  def greet01(greeting: String)(using name: String): String = {
+    greeting + ", " + name
+  }
+
+  test("given01") {
+    val s = greet01("hello")(using "there")
+    println(s)
   }
 
   /*
