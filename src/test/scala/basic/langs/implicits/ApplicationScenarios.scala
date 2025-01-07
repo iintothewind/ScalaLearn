@@ -51,8 +51,8 @@ class ApplicationScenarios extends AnyFunSuite {
   }
 
   test("given01") {
-    val s = greet01("hello")(using "there")
-    println(s)
+    assert("Hi, test" == greet01("Hi"))
+    assert("Hi, there" == greet01("Hi")(using "there"))
   }
 
   /*
