@@ -62,7 +62,7 @@ class MapTests extends AnyFunSuite {
   test("countWords01") {
     //    val buffer: BufferedSource = Source.fromFile("README.md")
     //    buffer.getLines()
-    //      .flatMap(_.split("[ ,.!;]+"))
+    //      .flatMap(_.split("[\\s+,.!;]+"))
     //      .foldLeft(Map.empty[String, Int])((map, word) => map.+(word -> (map.getOrElse(word, 0) + 1)))
     //      .toList.sortBy(_._2)(Ordering[Int].reverse).foreach(println)
     Generator
@@ -70,7 +70,7 @@ class MapTests extends AnyFunSuite {
         val buffer: BufferedSource = Source.fromFile("README.md")
         (buffer.getLines(), () => buffer.close())
       }
-      .flatMap(line => Generator(line.split("[ ,.!;]").toSeq: _*))
+      .flatMap(line => Generator(line.split("[\\s+,.!;]").toSeq: _*))
       .foldLeft(Map.empty[String, Int])((map, word) => map.+(word -> (map.getOrElse(word, 0) + 1)))
       .toList.sortBy(_._2)(Ordering[Int].reverse).foreach(println)
   }
@@ -78,7 +78,7 @@ class MapTests extends AnyFunSuite {
   test("countWords02") {
     val buffer: BufferedSource = Source.fromFile("README.md")
     val lst = Try(buffer.getLines())
-      .map(_.flatMap(_.split("[ ,.!;]+")))
+      .map(_.flatMap(_.split("[\\s+,.!;]+")))
       .map(_.filter(!_.isBlank))
       .map(_.foldLeft(Map.empty[String, Int])((map, word) => map.+(word -> (map.getOrElse(word, 0) + 1))))
       .map(_.toList.sortBy(_._2)(Ordering[Int].reverse))
