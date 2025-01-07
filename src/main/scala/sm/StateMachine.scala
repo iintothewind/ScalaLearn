@@ -34,7 +34,7 @@ case class StateMachine[S, C, R](s: Class[S], c: Class[C], r: Class[R], transiti
     case Some(lst) => withTransitions(lst.map(to => Transition(from, to, predicate, converter)))
     case _ => this
 
-  def mkTransition(fromState: S, toState: S, context: C): R = transitions.find(t => t.fromState == fromState && t.toState == toState).map(t => t.execute(context)).getOrElse(null.asInstanceOf[R])
+  def change(fromState: S, toState: S, context: C): R = transitions.find(t => t.fromState == fromState && t.toState == toState).map(t => t.execute(context)).getOrElse(null.asInstanceOf[R])
 
 }
 
