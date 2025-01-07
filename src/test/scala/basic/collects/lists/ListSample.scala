@@ -59,7 +59,8 @@ class ListSample extends AnyFunSuite, LazyLogging {
   }
 
   test("dropElementsAtTail") {
-    val list = List(1, 2, 3)
+    val list = List(1, null.asInstanceOf[Int], 3)
+    println(list)
     assertResult(List(1))(list.dropRight(2))
   }
 
