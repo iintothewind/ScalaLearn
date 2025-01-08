@@ -71,14 +71,14 @@ class MapTests extends AnyFunSuite {
         val buffer: BufferedSource = Source.fromFile("README.md")
         (buffer.getLines(), () => buffer.close())
       }
-      .flatMap(line => Generator(line.split("[\\s+,.!;]").toSeq: _*))
+      .flatMap(line => Generator(line.split("[\\s+,.!;:\\-#/\\[\\]()]+").toSeq: _*))
       .foldLeft(Map.empty[String, Int])((map, word) => map.+(word -> (map.getOrElse(word, 0) + 1)))
       .toList.sortBy(_._2)(Ordering[Int].reverse).foreach(println)
   }
 
   test("countWords02") {
     val lst = Using(Source.fromFile("README.md"))(buffer => buffer.getLines().toList)
-      .map(_.flatMap(_.split("[\\s+,.!;]+")))
+      .map(_.flatMap(_.split("[\\s+,.!;:\\-#/\\[\\]()]+")))
       .map(_.filter(!_.isBlank))
       .map(_.foldLeft(Map.empty[String, Int])((map, word) => map.+(word -> (map.getOrElse(word, 0) + 1))))
       .map(_.toList.sortBy(_._2)(Ordering[Int].reverse))
