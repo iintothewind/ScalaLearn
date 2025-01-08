@@ -7,7 +7,7 @@ import java.util
 import scala.collection.immutable.TreeMap
 import scala.collection.{immutable, mutable}
 import scala.io.{BufferedSource, Source}
-import scala.util.Try
+import scala.util.{Try, Using}
 
 class MapTests extends AnyFunSuite {
 
@@ -59,6 +59,7 @@ class MapTests extends AnyFunSuite {
     assert(Map("Run" -> 3, "Spot" -> 2, "See" -> 1) == countWords("See Spot Run. Run, Spot. Run!"))
   }
 
+
   test("countWords01") {
     //    val buffer: BufferedSource = Source.fromFile("README.md")
     //    buffer.getLines()
@@ -76,15 +77,14 @@ class MapTests extends AnyFunSuite {
   }
 
   test("countWords02") {
-    val buffer: BufferedSource = Source.fromFile("README.md")
-    val lst = Try(buffer.getLines())
+    val lst = Using(Source.fromFile("README.md"))(buffer => buffer.getLines().toList)
       .map(_.flatMap(_.split("[\\s+,.!;]+")))
       .map(_.filter(!_.isBlank))
       .map(_.foldLeft(Map.empty[String, Int])((map, word) => map.+(word -> (map.getOrElse(word, 0) + 1))))
       .map(_.toList.sortBy(_._2)(Ordering[Int].reverse))
       .getOrElse(List.empty)
+
     lst.foreach(println)
-    buffer.close()
   }
 
   test("sortedMap") {
