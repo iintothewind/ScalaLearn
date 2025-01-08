@@ -21,9 +21,9 @@ sealed trait Lst[+A] {
   def init: Lst[A] = {
     @tailrec
     def loop(il: Lst[A], lst: Lst[A]): Lst[A] = lst match {
-      case Nls => Nls
       case Cnl(a, rs) if rs == Nls => il
       case Cnl(a, rs) if rs != Nls => loop(a :: il, rs)
+      case _ => Nls
     }
 
     loop(Nls, this).reverse

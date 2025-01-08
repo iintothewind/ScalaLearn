@@ -18,12 +18,7 @@ case class StateMachine[S, C, R](s: Class[S], c: Class[C], r: Class[R], transiti
   def withTransition(from: S, to: S, exec: C => R): StateMachine[S, C, R] = withTransition(from, to, _ => true, exec)
 
   def withTransitions(trans: List[Transition[S, C, R]]): StateMachine[S, C, R] = Option(trans) match
-    case Some(lst) => if (lst.toSet.intersect(transitions).nonEmpty) {
-      throw new IllegalStateException(s"input list contains existing transitions")
-    } else {
-      val list = transitions.concat(lst)
-      copy(transitions = list)
-    }
+    case Some(lst) if (lst.toSet.intersect(transitions).isEmpty) => copy(transitions = transitions.concat(lst))
     case _ => this
 
   def withTransitions(fromStates: List[S], to: S, predicate: C => Boolean, exec: C => R): StateMachine[S, C, R] = Option(fromStates) match

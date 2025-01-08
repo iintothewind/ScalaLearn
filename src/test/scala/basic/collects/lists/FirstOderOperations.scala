@@ -183,7 +183,6 @@ class FirstOderOperations extends AnyFunSuite {
   test("toArray") {
     val nums = List(1, 2, 3)
     val array = Array(1, 2, 3)
-    assert(array.toIterable.lazyZip(nums.toArray.toIterable).forall(_ == _))
     assert(array.zip(nums.toArray[Int]).forall(pair => pair._1 == pair._2))
     assert(nums == nums.toArray.toList)
   }

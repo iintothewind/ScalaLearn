@@ -16,7 +16,7 @@ lazy val root = (project in file("."))
     name := "ScalaLearn"
   )
 
-shellPrompt := { s => Project.extract(s).currentProject.id + "> " }
+//shellPrompt := { s => Project.extract(s).currentProject.id + "> " }
 
 lazy val logbackVersion = "1.5.12"
 lazy val slf4jVersion = "2.0.16"
