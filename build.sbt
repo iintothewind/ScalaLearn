@@ -12,8 +12,16 @@ ThisBuild / scalacOptions ++= Seq(
 )
 
 lazy val root = (project in file("."))
+  .enablePlugins(AssemblyPlugin)
   .settings(
-    name := "ScalaLearn"
+    name := "ScalaLearn",
+    assembly / mainClass := Some("basic.App"),
+    assembly / assemblyJarName := "app.jar",
+    assembly / assemblyMergeStrategy := {
+      case "module-info.class" => MergeStrategy.discard // Discard the module-info.class file
+      case x if x.endsWith("module-info.class") => MergeStrategy.discard // Optionally discard all "module-info.class" files
+      case _ => MergeStrategy.first // Default merge strategy for other files
+    }
   )
 
 //shellPrompt := { s => Project.extract(s).currentProject.id + "> " }
